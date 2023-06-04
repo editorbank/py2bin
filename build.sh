@@ -1,10 +1,8 @@
+#!/bin/env bash
+source $(dirname $0)/config.sh
 
-docker=podman
-docker_image=docker.io/editorbank/py2bin
-docker_container=py2bin
-dockerfile_dir=./py2bin.image
-
-[ ! -z "$($docker ps -q -a -f name=$docker_container)" ] && $docker rm -f $docker_container
-[ ! -z "$($docker images -q -f reference=$docker_image)" ] && $docker rmi -f $docker_image
+# Удаление контейнеров и образов сделанных проектом
+$docker ps -q -a -f name=$docker_container | xargs -r $docker rm -f
+$docker images -q -f reference=$docker_image | xargs -r $docker rmi -f
 
 $docker build --tag $docker_image $dockerfile_dir
